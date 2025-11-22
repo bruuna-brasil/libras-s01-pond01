@@ -1,0 +1,480 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Linha do Tempo – História da Libras e da Comunidade Surda</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --roxo: #7c4dff;
+      --roxo-escuro: #4b2ea3;
+      --bg-page: #f6f2ff;
+      --card: #ffffff;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      padding: 24px;
+      font-family: "Fredoka", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background:
+        radial-gradient(circle at top, #ffffff 0, var(--bg-page) 55%, #ebe3ff 100%);
+      color: #333;
+    }
+
+    h1 {
+      text-align: center;
+      margin: 0;
+      font-size: 2rem;
+      color: var(--roxo-escuro);
+      letter-spacing: .05em;
+    }
+
+    .sub {
+      text-align: center;
+      font-size: .95rem;
+      color: #555;
+      margin-top: 6px;
+      margin-bottom: 10px;
+    }
+
+    .toolbar {
+      max-width: 1200px;
+      margin: 0 auto 12px;
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    .print-btn {
+      border: none;
+      background: var(--roxo);
+      color: #fff;
+      font-size: .9rem;
+      padding: 8px 14px;
+      border-radius: 999px;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(0,0,0,.18);
+    }
+
+    .print-btn:hover {
+      filter: brightness(1.05);
+      transform: translateY(-1px);
+    }
+
+    .timeline-wrapper {
+      max-width: 1200px;
+      margin: 0 auto;
+      overflow-x: auto;
+      padding-bottom: 18px;
+    }
+
+    .timeline-wrapper::-webkit-scrollbar {
+      height: 8px;
+    }
+    .timeline-wrapper::-webkit-scrollbar-track {
+      background: #e5dafd;
+      border-radius: 999px;
+    }
+    .timeline-wrapper::-webkit-scrollbar-thumb {
+      background: #7c4dff;
+      border-radius: 999px;
+    }
+
+    .timeline {
+      position: relative;
+      display: flex;
+      gap: 28px;
+      padding: 46px 40px 40px;
+      min-width: 1100px;
+      height: 430px;
+    }
+
+    .timeline::before {
+      content: "";
+      position: absolute;
+      left: 40px;
+      right: 40px;
+      top: 50%;
+      height: 4px;
+      background: linear-gradient(to right, #d0befc, #7c4dff);
+      border-radius: 999px;
+      z-index: 0;
+    }
+
+    .evento {
+      position: relative;
+      flex: 0 0 260px;
+      z-index: 1;
+    }
+
+    .evento-inner {
+      background: var(--card);
+      border-radius: 18px;
+      padding: 10px 14px 14px;
+      box-shadow: 0 10px 24px rgba(0,0,0,.08);
+      border: 2px solid rgba(124,77,255,.15);
+    }
+
+    .evento h3 {
+      margin: 0 0 4px;
+      font-size: 1rem;
+      color: var(--roxo-escuro);
+    }
+
+    .evento span {
+      font-size: .8rem;
+      color: #777;
+    }
+
+    .evento p {
+      margin: 6px 0 0;
+      font-size: .9rem;
+      line-height: 1.45;
+    }
+
+    .evento-img {
+      width: 100%;
+      max-height: 110px;
+      object-fit: cover;
+      border-radius: 12px;
+      margin-bottom: 6px;
+    }
+
+    .evento-top {
+      align-self: flex-start;
+      transform: translateY(-12px);
+    }
+
+    .evento-bottom {
+      align-self: flex-end;
+      transform: translateY(12px);
+    }
+
+    .evento::before,
+    .evento::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .evento::before {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: #fff;
+      border: 3px solid var(--roxo);
+      box-shadow: 0 0 0 3px #efe7ff;
+      z-index: 2;
+    }
+
+    .evento::after {
+      width: 2px;
+      height: 30px;
+      background: var(--roxo);
+      z-index: 1;
+    }
+
+    .evento-top::before { bottom: -20px; }
+    .evento-top::after  { bottom: -50px; }
+
+    .evento-bottom::before { top: -20px; }
+    .evento-bottom::after  { top: -50px; }
+
+    @page {
+      size: A4 landscape;
+      margin: 1.5cm;
+    }
+
+    @media print {
+      body {
+        background: #ffffff;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+        padding: 0;
+      }
+
+      h1 { margin-top: 0; }
+
+      .sub { margin-bottom: 4px; }
+
+      .toolbar {
+        display: none;
+      }
+
+      .timeline-wrapper {
+        max-width: none;
+        overflow-x: visible;
+        padding-bottom: 0;
+      }
+
+      .timeline {
+        min-width: auto;
+        height: auto;
+        padding: 18px 0 0;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 16px;
+      }
+
+      .timeline::before {
+        display: none;
+      }
+
+      .evento,
+      .evento-top,
+      .evento-bottom {
+        flex: 0 0 calc(33.333% - 12px);
+        transform: none;
+      }
+
+      .evento::before,
+      .evento::after {
+        display: none;
+      }
+    }
+
+    @media (max-width: 900px) {
+      body { padding: 16px; }
+
+      .timeline-wrapper {
+        overflow-x: visible;
+      }
+
+      .timeline {
+        display: block;
+        height: auto;
+        padding: 24px 0 10px;
+        min-width: auto;
+      }
+
+      .timeline::before {
+        left: 18px;
+        right: auto;
+        top: 0;
+        bottom: 0;
+        width: 4px;
+        height: auto;
+      }
+
+      .evento,
+      .evento-top,
+      .evento-bottom {
+        flex: none;
+        width: 100%;
+        padding: 10px 16px 10px 40px;
+        transform: none;
+        align-self: flex-start;
+        margin-bottom: 18px;
+      }
+
+      .evento::before {
+        left: 18px;
+        top: 22px;
+        bottom: auto;
+      }
+
+      .evento::after {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>Linha do Tempo – História da Libras</h1>
+  <p class="sub">Da antiguidade à cultura surda contemporânea no Brasil e no mundo.</p>
+
+  <div class="toolbar">
+    <button class="print-btn" onclick="window.print()">🖨️ Imprimir / Salvar em PDF</button>
+  </div>
+
+  <div class="timeline-wrapper">
+    <div class="timeline">
+
+      <!-- 1 -->
+      <section class="evento evento-top">
+        <div class="evento-inner">
+          <h3>Visões Antigas sobre Surdez</h3>
+          <span>Antiguidade e Idade Média</span>
+          <img class="evento-img" src="imagens/socrates.jpg" alt="Filósofo observando gestos">
+          <p>Pessoas surdas eram vistas como incapazes e afastadas da vida social. Alguns filósofos já percebiam a importância de gestos e sinais para a comunicação.</p>
+        </div>
+      </section>
+
+      <!-- 2 -->
+      <section class="evento evento-bottom">
+        <div class="evento-inner">
+          <h3>Surdos na Realeza</h3>
+          <span>Séculos XIII–XX</span>
+          <img class="evento-img" src="imagens/coroa.jpeg" alt="Coroa dourada representando realeza surda">
+          <p>Existem registros de príncipes e princesas surdos em famílias reais europeias. A surdez também esteve presente em contextos de poder e status.</p>
+        </div>
+      </section>
+
+      <!-- 3 -->
+      <section class="evento evento-top">
+        <div class="evento-inner">
+          <h3>Primeiros Educadores de Surdos</h3>
+          <span>Século XVI</span>
+          <img class="evento-img" src="imagens/alfabeto_manual_antigo.jpg" alt="Alfabeto manual antigo">
+          <p>Pedro Ponce de León e Juan Pablo Bonet, na Espanha, criam alfabetos manuais e métodos que provam que pessoas surdas podem aprender e se expressar com sinais.</p>
+        </div>
+      </section>
+
+      <!-- 4 -->
+      <section class="evento evento-bottom">
+        <div class="evento-inner">
+          <h3>Instituto de l’Épée</h3>
+          <span>1760 – França</span>
+          <img class="evento-img" src="imagens/escola_paris_surda.jpg" alt="Primeira escola pública para surdos em Paris">
+          <p>O abade l’Épée funda em Paris a primeira escola pública para surdos baseada em língua de sinais, inspirando escolas em vários países.</p>
+        </div>
+      </section>
+
+      <!-- 5 -->
+      <section class="evento evento-top">
+        <div class="evento-inner">
+          <h3>Primeira Escola para Surdos no Brasil</h3>
+          <span>1857</span>
+          <img class="evento-img" src="imagens/ines_rio.jpg" alt="Instituto Nacional de Educação de Surdos no Rio de Janeiro">
+          <p>Dom Pedro II convida o educador surdo Ernest Huet e cria o Imperial Instituto de Surdos-Mudos (atual INES). A língua de sinais francesa se mistura aos gestos locais e dá origem à Libras.</p>
+        </div>
+      </section>
+
+      <!-- 6 -->
+      <section class="evento evento-bottom">
+        <div class="evento-inner">
+          <h3>Congresso de Milão</h3>
+          <span>1880</span>
+          <img class="evento-img" src="imagens/congresso_milao.jpeg" alt="Congresso de Milão sobre educação de surdos">
+          <p>Educadores decidem que a educação de surdos deve ser apenas oral. Línguas de sinais são proibidas em muitas escolas, fortalecendo o oralismo.</p>
+        </div>
+      </section>
+
+      <!-- 7 -->
+      <section class="evento evento-top">
+        <div class="evento-inner">
+          <h3>Línguas de Sinais Reconhecidas</h3>
+          <span>Anos 1960</span>
+          <img class="evento-img" src="imagens/analise_linguista_libras.jpeg" alt="Linguista analisando língua de sinais">
+          <p>Pesquisas mostram que línguas de sinais têm gramática e estrutura completas. A Libras passa a ser vista como língua de verdade, e não “mímica”.</p>
+        </div>
+      </section>
+
+      <!-- 8 -->
+      <section class="evento evento-bottom">
+        <div class="evento-inner">
+          <h3>Organização da Comunidade Surda</h3>
+          <span>Anos 1970–1980</span>
+          <img class="evento-img" src="imagens/encontro_surdos.jpeg" alt="Encontro de pessoas surdas">
+          <p>Associações de surdos se fortalecem no Brasil. Em 1987, a FENEIS é criada como principal federação da comunidade surda brasileira.</p>
+        </div>
+      </section>
+
+      <!-- 9 -->
+      <section class="evento evento-top">
+        <div class="evento-inner">
+          <h3>Movimento Surdo Global</h3>
+          <span>Anos 1980</span>
+          <img class="evento-img" src="imagens/oscar_marlee.jpg" alt="Estatueta do Oscar representando atriz surda premiada">
+          <p>Marlee Matlin se torna a primeira atriz surda a ganhar um Oscar, e o movimento “Deaf President Now” conquista o primeiro reitor surdo na Gallaudet University.</p>
+        </div>
+      </section>
+
+      <!-- 10 -->
+      <section class="evento evento-bottom">
+        <div class="evento-inner">
+          <h3>Nome “Libras”</h3>
+          <span>1993</span>
+          <p>Representantes da comunidade surda brasileira escolhem oficialmente o nome <strong>Libras – Língua Brasileira de Sinais</strong>, reforçando a identidade linguística.</p>
+        </div>
+      </section>
+
+      <!-- 11 -->
+      <section class="evento evento-top">
+        <div class="evento-inner">
+          <h3>Libras Reconhecida por Lei</h3>
+          <span>2002</span>
+          <p>A Lei nº 10.436 reconhece a Libras como meio legal de comunicação e expressão da comunidade surda no Brasil.</p>
+        </div>
+      </section>
+
+      <!-- 12 -->
+      <section class="evento evento-bottom">
+        <div class="evento-inner">
+          <h3>Decreto da Libras e Educação Bilíngue</h3>
+          <span>2005</span>
+          <p>O Decreto nº 5.626 regulamenta a lei, define formação de professores e intérpretes e orienta a educação bilíngue: Libras como primeira língua e português escrito como segunda.</p>
+        </div>
+      </section>
+
+      <!-- 13 -->
+      <section class="evento evento-top">
+        <div class="evento-inner">
+          <h3>Cena Cultural Surda em SP</h3>
+          <span>Anos 2010</span>
+          <img class="evento-img" src="imagens/teatro_libras.jpeg" alt="Palco de teatro com apresentação em Libras">
+          <p>Projetos de teatro em Libras em escolas bilíngues e sessões acessíveis em teatros municipais valorizam a cultura surda na cidade de São Paulo.</p>
+        </div>
+      </section>
+
+      <!-- 14 -->
+      <section class="evento evento-bottom">
+        <div class="evento-inner">
+          <h3>Cinema e Representação</h3>
+          <span>2014–2021</span>
+          <p>Filmes como <em>La Famille Bélier</em> e <em>CODA</em> colocam famílias surdas no centro da narrativa e ampliam o debate sobre língua de sinais no cinema.</p>
+        </div>
+      </section>
+
+      <!-- 15 -->
+      <section class="evento evento-top">
+        <div class="evento-inner">
+          <h3>Lei Brasileira de Inclusão</h3>
+          <span>2015</span>
+          <p>O Estatuto da Pessoa com Deficiência reforça o direito à acessibilidade comunicacional, incluindo Libras em serviços públicos, educação, saúde, cultura e trabalho.</p>
+        </div>
+      </section>
+
+      <!-- 16 -->
+      <section class="evento evento-bottom">
+        <div class="evento-inner">
+          <h3>Influencers e Figuras Surdas</h3>
+          <span>Anos 2010–2020</span>
+          <img class="evento-img" src="imagens/influencers_surdos.jpeg" alt="Tela de celular com lives em Libras">
+          <p>Influencers surdos brasileiros usam redes sociais para ensinar Libras, discutir identidade surda e ampliar a visibilidade da comunidade.</p>
+        </div>
+      </section>
+
+      <!-- 17 -->
+      <section class="evento evento-top">
+        <div class="evento-inner">
+          <h3>Educação Bilíngue na LDB</h3>
+          <span>2021</span>
+          <p>A Lei nº 14.191 inclui a educação bilíngue de surdos como modalidade específica da educação básica, reforçando o direito de crianças surdas aprenderem em Libras.</p>
+        </div>
+      </section>
+
+      <!-- 18 -->
+      <section class="evento evento-bottom">
+        <div class="evento-inner">
+          <h3>Desafios Atuais</h3>
+          <span>Hoje</span>
+          <p>Libras está mais presente na mídia e nos espaços culturais, mas ainda é necessário ampliar o ensino da língua para ouvintes, garantir intérpretes e fortalecer o protagonismo da comunidade surda.</p>
+        </div>
+      </section>
+
+    </div>
+  </div>
+
+  <script>
+    // Botão já chama window.print()
+  </script>
+</body>
+</html>
